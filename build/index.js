@@ -3310,7 +3310,7 @@ exports.default = (0, _withAuth2.default)(SecureRoute);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(process) {
+
 
 Object.defineProperty(exports, "__esModule", {
     value: true
@@ -3433,7 +3433,7 @@ var Security = function (_React$Component) {
             localStorage.removeItem('isLoggedIn');
             (0, _setCookie.setCookie)('signed_in', false, -10); // negative amount to expire instantly
 
-            var returnTo = encodeURIComponent(process.env.REACT_APP_DOMAIN + '/loggedout');
+            var returnTo = encodeURIComponent(this.props.appDomain + '/loggedout');
             window.location.href = 'https://' + this.props.domain + '/v2/logout?returnTo=' + returnTo;
         }
     }, {
@@ -3605,7 +3605,6 @@ var Security = function (_React$Component) {
 }(_react2.default.Component);
 
 exports.default = (0, _reactRouter.withRouter)(Security);
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ }),
 /* 29 */
