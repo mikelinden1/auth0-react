@@ -3,15 +3,16 @@ import { withRouter } from 'react-router';
 
 import auth0 from 'auth0-js';
 import AuthContext from './auth-context';
-import { setCookie } from 'utils/set-cookie';
+import { setCookie } from './utils/set-cookie';
 
 class Security extends React.Component {
-    accessToken;
-    idToken;
-    expiresAt;
 
     constructor(props) {
         super(props);
+
+        this.accessToken = null;
+        this.idToken = null;
+        this.expiresAt = null;
         
         const { domain, clientID, redirectUri } = props;
 
