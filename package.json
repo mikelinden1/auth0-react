@@ -17,9 +17,9 @@
     "dist",
     "src"
   ],
-  "author": "",
+  "author": "Mike Linden at Skift",
   "license": "",
-  "homepage": "",
+  "homepage": "https://skift.com/",
   "dependencies": {
     "auth0-js": "^9.10.0"
   },
