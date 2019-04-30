@@ -14,7 +14,7 @@ class Security extends React.Component {
         this.idToken = null;
         this.expiresAt = null;
         
-        const { domain, clientID, redirectUri } = props;
+        const { domain, clientID, redirectUri, appDomain } = props;
 
         this.auth0 = new auth0.WebAuth({
             domain,
@@ -23,6 +23,8 @@ class Security extends React.Component {
             responseType: 'token id_token',
             scope: 'openid'
         });
+
+        this.appDomain = appDomain;
 
         this.state = {
             authChecked: false,
@@ -64,7 +66,7 @@ class Security extends React.Component {
         localStorage.removeItem('isLoggedIn');
         setCookie('signed_in', false, -10); // negative amount to expire instantly
 
-        const returnTo = encodeURIComponent(process.env.REACT_APP_DOMAIN + '/loggedout');
+        const returnTo = encodeURIComponent(this.this.appDomain + '/loggedout');
         window.location.href = `https://${this.props.domain}/v2/logout?returnTo=${returnTo}`;
     }
 
