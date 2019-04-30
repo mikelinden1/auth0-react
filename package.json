@@ -1,33 +1,57 @@
 {
   "name": "auth0-react",
   "version": "0.0.1",
-  "description": "Put a description here",
-  "main": "build/index.js",
-  "peerDependencies": {
-    "react": "^16.7.0"
-  },
-  "dependencies": {
-    "auth0-js": "^9.10.0",
-    "react": "^16.7.0",
-    "react-router-dom": "^4.2.2",
-    "webpack": "^4.19.1"
-  },
+  "description": "React support for Auth0",
+  "main": "./dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack --watch",
-    "build": "webpack"
+    "build": "rimraf dist/ && babel src -d dist"
   },
-  "author": {
-    "name": "Mike Linden",
-    "email": "ml@skift.com"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/skift/auth0-react.git"
+  },
+  "keywords": [
+    "auth0"
+  ],
+  "files": [
+    "dist",
+    "src"
+  ],
+  "author": "",
+  "license": "",
+  "homepage": "",
+  "dependencies": {
+    "auth0-js": "^9.10.0"
+  },
+  "peerDependencies": {
+    "react": ">=16",
+    "react-router-dom": ">=4"
   },
   "devDependencies": {
-    "babel-cli": "^6.24.1",
-    "babel-core": "^6.24.1",
-    "babel-loader": "^7.0.0",
-    "babel-plugin-transform-object-rest-spread": "^6.23.0",
-    "babel-plugin-transform-react-jsx": "^6.24.1",
-    "babel-preset-env": "^1.5.1",
-    "webpack-cli": "^3.3.1"
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.0.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react-app": "^3.0.2",
+    "enzyme": "^3.5.1",
+    "enzyme-adapter-react-16": "^1.4.0",
+    "eslint": "^4.7.1",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-jsx-a11y": "^6.0.2",
+    "eslint-plugin-react": "^7.3.0",
+    "eslint-watch": "^3.1.2",
+    "jasmine-core": "~2.6.2",
+    "jasmine-spec-reporter": "~4.1.0",
+    "jest": "^23.6.0",
+    "polished": "^1.7.0",
+    "protractor": "^5.1.2",
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2",
+    "react-router-dom": "^4.2.2",
+    "rimraf": "^2.6.2",
+    "styled-components": "^2.1.2"
   }
 }
