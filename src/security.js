@@ -66,7 +66,7 @@ class Security extends React.Component {
         localStorage.removeItem('isLoggedIn');
         setCookie('signed_in', false, -10); // negative amount to expire instantly
 
-        const returnTo = encodeURIComponent(this.this.appDomain + '/loggedout');
+        const returnTo = encodeURIComponent(this.appDomain + '/loggedout');
         window.location.href = `https://${this.props.domain}/v2/logout?returnTo=${returnTo}`;
     }
 
