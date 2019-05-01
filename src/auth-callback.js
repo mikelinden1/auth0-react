@@ -18,8 +18,7 @@ class AuthCallback extends React.Component {
                     this.setState({ authenticated: true });
                 }
             }).catch(err => {
-                console.log('err', err);
-                const error = err.errorMessage || 'An unexpected error occured';
+                const error = err.errorDescription || 'An unexpected error occured';
                 this.setState({ error });
             });
         } else {
