@@ -74,7 +74,6 @@ class Security extends React.Component {
                 if (authResult && authResult.accessToken && authResult.idToken) {
                     resolve(this.setSession(authResult));
                 } else {
-                    console.log(err);
                     reject(err);
                 }
             });
@@ -187,7 +186,7 @@ class Security extends React.Component {
 
         if (err) {
             if (SignInErrorMessage) {
-                return <SignInErrorMessage />;
+                return <SignInErrorMessage err={err} />;
             }
             
             return <div>An error occured while signing in</div>;

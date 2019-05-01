@@ -134,7 +134,6 @@ var Security = function (_React$Component) {
                     if (authResult && authResult.accessToken && authResult.idToken) {
                         resolve(_this2.setSession(authResult));
                     } else {
-                        console.log(err);
                         reject(err);
                     }
                 });
@@ -267,7 +266,7 @@ var Security = function (_React$Component) {
 
             if (err) {
                 if (SignInErrorMessage) {
-                    return _react2.default.createElement(SignInErrorMessage, null);
+                    return _react2.default.createElement(SignInErrorMessage, { err: err });
                 }
 
                 return _react2.default.createElement(
