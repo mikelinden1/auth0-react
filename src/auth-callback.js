@@ -17,8 +17,9 @@ class AuthCallback extends React.Component {
                     // if we already redirected don't setState becuase the component has been unmounted
                     this.setState({ authenticated: true });
                 }
-            }).catch(() => {
-                this.setState({ error: 'An unexpected error occured' });
+            }).catch(err => {
+                const error = err.errorMessage || 'An unexpected error occured';
+                this.setState({ error });
             });
         } else {
             this.setState({ error: 'Missing tokens' });

@@ -54,8 +54,9 @@ var AuthCallback = function (_React$Component) {
                         // if we already redirected don't setState becuase the component has been unmounted
                         _this2.setState({ authenticated: true });
                     }
-                }).catch(function () {
-                    _this2.setState({ error: 'An unexpected error occured' });
+                }).catch(function (err) {
+                    var error = err.errorMessage || 'An unexpected error occured';
+                    _this2.setState({ error: error });
                 });
             } else {
                 this.setState({ error: 'Missing tokens' });
