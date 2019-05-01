@@ -55,6 +55,7 @@ var AuthCallback = function (_React$Component) {
                         _this2.setState({ authenticated: true });
                     }
                 }).catch(function (err) {
+                    console.log('err', err);
                     var error = err.errorMessage || 'An unexpected error occured';
                     _this2.setState({ error: error });
                 });
