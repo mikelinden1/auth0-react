@@ -28,10 +28,13 @@ class AuthCallback extends React.Component {
 
     render() {
         const { authenticated, error } = this.state;
-        const { errorMsg, loader } = this.props;
+        const { errorMsg, loader, routeRoot } = this.props;
+
 
         if (authenticated) {
-            return <Redirect to='/' />;
+            const redirect = routeRoot ? routeRoot + '/' : '/';
+
+            return <Redirect to={redirect} />;
         }
 
         if (error) {

@@ -70,11 +70,14 @@ var AuthCallback = function (_React$Component) {
                 error = _state.error;
             var _props2 = this.props,
                 errorMsg = _props2.errorMsg,
-                loader = _props2.loader;
+                loader = _props2.loader,
+                routeRoot = _props2.routeRoot;
 
 
             if (authenticated) {
-                return _react2.default.createElement(_reactRouterDom.Redirect, { to: '/' });
+                var redirect = routeRoot ? routeRoot + '/' : '/';
+
+                return _react2.default.createElement(_reactRouterDom.Redirect, { to: redirect });
             }
 
             if (error) {
