@@ -45,6 +45,7 @@ var Security = function (_React$Component) {
         _this.accessToken = null;
         _this.idToken = null;
         _this.expiresAt = null;
+        _this.profile = null;
 
         var domain = props.domain,
             clientID = props.clientID,
@@ -62,6 +63,7 @@ var Security = function (_React$Component) {
         _this.state = {
             authChecked: false,
             loggedIn: false,
+            profile: null,
             login: function login(redirect) {
                 return _this.login(redirect);
             },
@@ -114,6 +116,7 @@ var Security = function (_React$Component) {
 
             // // Remove tokens and expiry time
             this.accessToken = null;
+            this.profile = null;
             this.idToken = null;
             this.expiresAt = 0;
 
@@ -155,6 +158,8 @@ var Security = function (_React$Component) {
             // Set isLoggedIn flag in localStorage
             localStorage.setItem('isLoggedIn', 'true');
 
+            console.log('auth result', authResult);
+
             // TODO: set skift_usr cookie so it expires with the JWT
             (0, _setCookie.setCookie)('skift_usr', authResult.idToken, 60 * 60 * 24 * 30);
             (0, _setCookie.setCookie)('signed_in', true, 60 * 60 * 24 * 30);
@@ -163,14 +168,19 @@ var Security = function (_React$Component) {
             var expiresAt = authResult.expiresIn * 1000 + new Date().getTime();
             this.accessToken = authResult.accessToken;
             this.idToken = authResult.idToken;
+            this.profile = authResult.profile;
             this.expiresAt = expiresAt;
 
-            if (this.props.tokenCallback) {
+            if (this.props.tokenCallback && typeof this.props.tokenCallback === 'function') {
                 // add the token to the redux store and axios headers
                 this.props.tokenCallback(this.idToken);
             }
 
-            this.setState({ loggedIn: true });
+            if (this.props.profileCallback && typeof this.props.profileCallback === 'function' && this.profile) {
+                this.props.profileCallback(this.profile);
+            }
+
+            this.setState({ loggedIn: true, profile: this.profile });
 
             var redirect = localStorage.getItem('loginRedirect');
             if (redirect) {
