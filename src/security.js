@@ -94,9 +94,7 @@ class Security extends React.Component {
     setSession(authResult) {        
         // Set isLoggedIn flag in localStorage
         localStorage.setItem('isLoggedIn', 'true');
-
-        console.log('auth result', authResult);
-
+        
         // TODO: set skift_usr cookie so it expires with the JWT
         setCookie('skift_usr', authResult.idToken, 60*60*24*30);
         setCookie('signed_in', true, 60*60*24*30);
@@ -105,7 +103,7 @@ class Security extends React.Component {
         let expiresAt = (authResult.expiresIn * 1000) + new Date().getTime();
         this.accessToken = authResult.accessToken;
         this.idToken = authResult.idToken;
-        this.profile = authResult.profile;
+        this.profile = (authResult.idTokenPayload || {})['https://my.skift.com/profile'];
         this.expiresAt = expiresAt;
 
         if (this.props.tokenCallback && typeof this.props.tokenCallback === 'function') {
