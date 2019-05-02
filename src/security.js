@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter } from 'react-router';
+import { withRouter } from 'react-router-dom';
 
 import auth0 from 'auth0-js';
 import AuthContext from './auth-context';

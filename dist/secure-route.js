@@ -10,7 +10,7 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouter = require('react-router');
+var _reactRouterDom = require('react-router-dom');
 
 var _withAuth = require('./with-auth');
 
@@ -93,7 +93,7 @@ var SecureRoute = function (_React$Component2) {
         value: function render() {
             var _this3 = this;
 
-            return _react2.default.createElement(_reactRouter.Route, {
+            return _react2.default.createElement(_reactRouterDom.Route, {
                 path: this.props.path,
                 exact: this.props.exact,
                 render: function render(props) {
@@ -106,4 +106,4 @@ var SecureRoute = function (_React$Component2) {
     return SecureRoute;
 }(_react2.default.Component);
 
-exports.default = (0, _reactRouter.withRouter)((0, _withAuth2.default)(SecureRoute));
+exports.default = (0, _reactRouterDom.withRouter)((0, _withAuth2.default)(SecureRoute));

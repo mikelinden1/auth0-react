@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, withRouter } from 'react-router';
+import { Route, withRouter } from 'react-router-dom';
 import withAuth from './with-auth';
 
 class RenderWrapper extends React.Component {

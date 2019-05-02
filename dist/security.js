@@ -12,7 +12,7 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouter = require('react-router');
+var _reactRouterDom = require('react-router-dom');
 
 var _auth0Js = require('auth0-js');
 
@@ -291,4 +291,4 @@ var Security = function (_React$Component) {
     return Security;
 }(_react2.default.Component);
 
-exports.default = (0, _reactRouter.withRouter)(Security);
+exports.default = (0, _reactRouterDom.withRouter)(Security);
