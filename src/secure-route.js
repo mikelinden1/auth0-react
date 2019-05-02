@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route } from 'react-router';
+import { Route, withRouter } from 'react-router';
 import withAuth from './with-auth';
 
 class RenderWrapper extends React.Component {
@@ -54,4 +54,4 @@ class SecureRoute extends React.Component {
     }
 }
 
-export default withAuth(SecureRoute);
+export default withRouter(withAuth(SecureRoute));

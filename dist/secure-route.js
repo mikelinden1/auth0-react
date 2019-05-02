@@ -106,4 +106,4 @@ var SecureRoute = function (_React$Component2) {
     return SecureRoute;
 }(_react2.default.Component);
 
-exports.default = (0, _withAuth2.default)(SecureRoute);
+exports.default = (0, _reactRouter.withRouter)((0, _withAuth2.default)(SecureRoute));
