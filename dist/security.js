@@ -166,7 +166,7 @@ var Security = function (_React$Component) {
             var expiresAt = authResult.expiresIn * 1000 + new Date().getTime();
             this.accessToken = authResult.accessToken;
             this.idToken = authResult.idToken;
-            this.profile = (authResult.idTokenPayload || {})['https://my.skift.com/profile'];
+            this.profile = authResult.idTokenPayload && authResult.idTokenPayload['https://my.skift.com/profile'];
             this.expiresAt = expiresAt;
 
             if (this.props.tokenCallback && typeof this.props.tokenCallback === 'function') {
@@ -174,7 +174,10 @@ var Security = function (_React$Component) {
                 this.props.tokenCallback(this.idToken);
             }
 
+            console.log('profile', this.profile);
+
             if (this.props.profileCallback && typeof this.props.profileCallback === 'function' && this.profile) {
+                console.log('call!');
                 this.props.profileCallback(this.profile);
             }
 
