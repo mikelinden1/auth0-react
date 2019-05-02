@@ -174,10 +174,7 @@ var Security = function (_React$Component) {
                 this.props.tokenCallback(this.idToken);
             }
 
-            console.log('profile', this.profile);
-
             if (this.props.profileCallback && typeof this.props.profileCallback === 'function' && this.profile) {
-                console.log('call!');
                 this.props.profileCallback(this.profile);
             }
 
