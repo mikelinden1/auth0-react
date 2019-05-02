@@ -158,8 +158,6 @@ var Security = function (_React$Component) {
             // Set isLoggedIn flag in localStorage
             localStorage.setItem('isLoggedIn', 'true');
 
-            console.log('auth result', authResult);
-
             // TODO: set skift_usr cookie so it expires with the JWT
             (0, _setCookie.setCookie)('skift_usr', authResult.idToken, 60 * 60 * 24 * 30);
             (0, _setCookie.setCookie)('signed_in', true, 60 * 60 * 24 * 30);
@@ -168,7 +166,7 @@ var Security = function (_React$Component) {
             var expiresAt = authResult.expiresIn * 1000 + new Date().getTime();
             this.accessToken = authResult.accessToken;
             this.idToken = authResult.idToken;
-            this.profile = authResult.profile;
+            this.profile = (authResult.idTokenPayload || {})['https://my.skift.com/profile'];
             this.expiresAt = expiresAt;
 
             if (this.props.tokenCallback && typeof this.props.tokenCallback === 'function') {
