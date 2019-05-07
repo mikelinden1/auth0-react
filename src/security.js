@@ -22,7 +22,7 @@ class Security extends React.Component {
             clientID,
             redirectUri,
             responseType: 'token id_token',
-            scope: 'openid offline_access'
+            scope: 'openid'
         });
 
         this.state = {
@@ -91,8 +91,7 @@ class Security extends React.Component {
         return this.idToken;
     }
 
-    setSession(authResult) {
-        console.log('authResult', authResult);    
+    setSession(authResult) {        
         // Set isLoggedIn flag in localStorage
         localStorage.setItem('isLoggedIn', 'true');
         
