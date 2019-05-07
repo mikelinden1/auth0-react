@@ -56,8 +56,8 @@ var Security = function (_React$Component) {
             domain: domain,
             clientID: clientID,
             redirectUri: redirectUri,
-            responseType: 'token id_token',
-            scope: 'openid'
+            responseType: 'token',
+            scope: 'openid offline_access'
         });
 
         _this.state = {

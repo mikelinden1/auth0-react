@@ -21,8 +21,8 @@ class Security extends React.Component {
             domain,
             clientID,
             redirectUri,
-            responseType: 'token id_token',
-            scope: 'openid'
+            responseType: 'token',
+            scope: 'openid offline_access'
         });
 
         this.state = {
