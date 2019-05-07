@@ -155,6 +155,7 @@ var Security = function (_React$Component) {
     }, {
         key: 'setSession',
         value: function setSession(authResult) {
+            console.log('authResult', authResult);
             // Set isLoggedIn flag in localStorage
             localStorage.setItem('isLoggedIn', 'true');
 

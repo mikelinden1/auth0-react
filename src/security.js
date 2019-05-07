@@ -91,7 +91,8 @@ class Security extends React.Component {
         return this.idToken;
     }
 
-    setSession(authResult) {        
+    setSession(authResult) {
+        console.log('authResult', authResult);    
         // Set isLoggedIn flag in localStorage
         localStorage.setItem('isLoggedIn', 'true');
         
