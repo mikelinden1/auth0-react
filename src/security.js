@@ -23,7 +23,7 @@ class Security extends React.Component {
             clientID,
             redirectUri,
             responseType: 'token id_token',
-            scope: 'openid'
+            scope: 'openid read:current_user update:current_user_metadata'
         };
 
         if (audience) {

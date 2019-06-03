@@ -59,7 +59,7 @@ var Security = function (_React$Component) {
             clientID: clientID,
             redirectUri: redirectUri,
             responseType: 'token id_token',
-            scope: 'openid'
+            scope: 'openid read:current_user update:current_user_metadata'
         };
 
         if (audience) {
