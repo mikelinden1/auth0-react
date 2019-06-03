@@ -164,16 +164,22 @@ var Security = function (_React$Component) {
             (0, _setCookie.setCookie)('signed_in', true, 60 * 60 * 24 * 30);
 
             // Set the time that the access token will expire at
-            var expiresInMS = authResult.expiresIn * 1000;
-            var expiresAt = expiresInMS + new Date().getTime();
+            var expiresAt = authResult.expiresIn * 1000 + new Date().getTime();
             this.accessToken = authResult.accessToken;
             this.idToken = authResult.idToken;
             this.profile = authResult.idTokenPayload && authResult.idTokenPayload['https://my.skift.com/profile'];
             this.expiresAt = expiresAt;
 
-            console.log('auth result', authResult);
+            var jwtExp = authResult.idTokenPayload && authResult.idTokenPayload.exp;
+            var now = Date.now();
+            console.log('jwt exp timestamp', jwtExp);
+            console.log('now', now);
+            var sessionExpBuffer = 60 * 60; // one hour in ms
+            var sessionRenewTime = jwtExp - now - sessionExpBuffer;
 
-            this.renewSessionTimer = setTimeout(30000, expiresInMS);
+            console.log('timeout', sessionRenewTime);
+
+            this.renewSessionTimer = setTimeout(sessionRenewTime, expiresInMS);
 
             if (this.props.tokenCallback && typeof this.props.tokenCallback === 'function') {
                 // add the token to the redux store and axios headers

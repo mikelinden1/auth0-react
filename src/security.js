@@ -102,16 +102,22 @@ class Security extends React.Component {
 
 
         // Set the time that the access token will expire at
-        const expiresInMS = authResult.expiresIn * 1000;
-        const expiresAt = expiresInMS + new Date().getTime();
+        const expiresAt = (authResult.expiresIn * 1000) + new Date().getTime();
         this.accessToken = authResult.accessToken;
         this.idToken = authResult.idToken;
         this.profile = authResult.idTokenPayload && authResult.idTokenPayload['https://my.skift.com/profile'];
         this.expiresAt = expiresAt;
 
-        console.log('auth result', authResult);
+        const jwtExp = authResult.idTokenPayload && authResult.idTokenPayload.exp;
+        const now = Date.now();
+        console.log('jwt exp timestamp', jwtExp);
+        console.log('now', now);
+        const sessionExpBuffer = 60*60; // one hour in ms
+        const sessionRenewTime = jwtExp - now - sessionExpBuffer;
 
-        this.renewSessionTimer = setTimeout(30000, expiresInMS);
+        console.log('timeout', sessionRenewTime);
+
+        this.renewSessionTimer = setTimeout(sessionRenewTime, expiresInMS);
 
         if (this.props.tokenCallback && typeof this.props.tokenCallback === 'function') {
             // add the token to the redux store and axios headers
