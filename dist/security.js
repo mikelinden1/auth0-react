@@ -182,6 +182,7 @@ var Security = function (_React$Component) {
 
             console.log('timeout', sessionRenewTime);
 
+            clearTimeout(this.renewSessionTimer);
             this.renewSessionTimer = setTimeout(function () {
                 return _this3.renewSession();
             }, sessionRenewTime);

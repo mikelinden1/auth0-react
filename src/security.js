@@ -118,6 +118,7 @@ class Security extends React.Component {
 
         console.log('timeout', sessionRenewTime);
 
+        clearTimeout(this.renewSessionTimer);
         this.renewSessionTimer = setTimeout(() => this.renewSession(), sessionRenewTime);
 
         if (this.props.tokenCallback && typeof this.props.tokenCallback === 'function') {
