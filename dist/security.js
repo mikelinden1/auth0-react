@@ -180,7 +180,7 @@ var Security = function (_React$Component) {
 
             console.log('timeout', sessionRenewTime);
 
-            this.renewSessionTimer = setTimeout(2 * 60 * 60, expiresInMS);
+            this.renewSessionTimer = setTimeout(this.renewSession, 2 * 60 * 60);
 
             if (this.props.tokenCallback && typeof this.props.tokenCallback === 'function') {
                 // add the token to the redux store and axios headers
