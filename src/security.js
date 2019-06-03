@@ -14,6 +14,7 @@ class Security extends React.Component {
         this.idToken = null;
         this.expiresAt = null;
         this.profile = null;
+        this.renewSessionTimer = null;
         
         const { domain, clientID, redirectUri } = props;
 
@@ -99,12 +100,18 @@ class Security extends React.Component {
         setCookie('skift_usr', authResult.idToken, 60*60*24*30);
         setCookie('signed_in', true, 60*60*24*30);
 
+
         // Set the time that the access token will expire at
-        let expiresAt = (authResult.expiresIn * 1000) + new Date().getTime();
+        const expiresInMS = authResult.expiresIn * 1000;
+        const expiresAt = expiresInMS + new Date().getTime();
         this.accessToken = authResult.accessToken;
         this.idToken = authResult.idToken;
         this.profile = authResult.idTokenPayload && authResult.idTokenPayload['https://my.skift.com/profile'];
         this.expiresAt = expiresAt;
+
+        console.log('expires at', expiresInMS, expiresAt);
+
+        this.renewSessionTimer = setTimeout(this.renewSession, expiresInMS);
 
         if (this.props.tokenCallback && typeof this.props.tokenCallback === 'function') {
             // add the token to the redux store and axios headers
