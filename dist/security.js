@@ -183,7 +183,7 @@ var Security = function (_React$Component) {
             this.expiresAt = expiresAt;
 
             var sessionExpBuffer = 60 * 60 * 1000; // one hour in ms
-            var sessionRenewTime = Math.floor(authResult.expiresIn - now - sessionExpBuffer);
+            var sessionRenewTime = Math.floor(authResult.expiresIn * 1000 - now - sessionExpBuffer);
 
             clearTimeout(this.renewSessionTimer);
             this.renewSessionTimer = setTimeout(function () {
