@@ -183,12 +183,14 @@ var Security = function (_React$Component) {
             this.expiresAt = expiresAt;
 
             var sessionExpBuffer = 60 * 60 * 1000; // one hour in ms
-            var sessionRenewTime = Math.floor(authResult.expiresIn * 1000 - now - sessionExpBuffer);
+            var sessionRenewTime = Math.floor(authResult.expiresIn - sessionExpBuffer);
+
+            console.log('now, exp, renew', now, authResult.expiresIn, sessionRenewTime);
 
             clearTimeout(this.renewSessionTimer);
             this.renewSessionTimer = setTimeout(function () {
                 return _this3.renewSession();
-            }, sessionRenewTime);
+            }, 300000);
 
             if (this.props.tokenCallback && typeof this.props.tokenCallback === 'function') {
                 // add the token to the redux store and axios headers
