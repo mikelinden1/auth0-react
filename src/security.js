@@ -118,10 +118,12 @@ class Security extends React.Component {
         this.expiresAt = expiresAt;
 
         const sessionExpBuffer = 60*60*1000; // one hour in ms
-        const sessionRenewTime = Math.floor((authResult.expiresIn * 1000) - now - sessionExpBuffer);
+        const sessionRenewTime = Math.floor(authResult.expiresIn - sessionExpBuffer);
+
+        console.log('now, exp, renew', now, authResult.expiresIn, sessionRenewTime);
 
         clearTimeout(this.renewSessionTimer);
-        this.renewSessionTimer = setTimeout(() => this.renewSession(), sessionRenewTime);
+        this.renewSessionTimer = setTimeout(() => this.renewSession(), 300000);
 
 
         if (this.props.tokenCallback && typeof this.props.tokenCallback === 'function') {
