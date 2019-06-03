@@ -176,9 +176,9 @@ var Security = function (_React$Component) {
 
             var jwtExp = authResult.idTokenPayload && authResult.idTokenPayload.exp;
             console.log('jwt exp timestamp', jwtExp);
-            console.log('now', now);
+            console.log('now', now / 1000);
             var sessionExpBuffer = 60 * 60; // one hour in ms
-            var sessionRenewTime = jwtExp - now - sessionExpBuffer;
+            var sessionRenewTime = jwtExp - now / 1000 - sessionExpBuffer;
 
             console.log('timeout', sessionRenewTime);
 
