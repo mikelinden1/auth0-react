@@ -178,13 +178,13 @@ var Security = function (_React$Component) {
             console.log('jwt exp timestamp', jwtExp);
             console.log('now', now / 1000);
             var sessionExpBuffer = 60 * 60; // one hour in ms
-            var sessionRenewTime = jwtExp - now / 1000 - sessionExpBuffer;
+            var sessionRenewTime = Math.floor(jwtExp - now / 1000 - sessionExpBuffer);
 
             console.log('timeout', sessionRenewTime);
 
             this.renewSessionTimer = setTimeout(function () {
                 return _this3.renewSession();
-            }, 2 * 60 * 60);
+            }, sessionRenewTime);
 
             if (this.props.tokenCallback && typeof this.props.tokenCallback === 'function') {
                 // add the token to the redux store and axios headers
