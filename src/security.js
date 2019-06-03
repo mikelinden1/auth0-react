@@ -93,7 +93,6 @@ class Security extends React.Component {
     }
 
     setSession(authResult) { 
-        console.log('set session');       
         // Set isLoggedIn flag in localStorage
         localStorage.setItem('isLoggedIn', 'true');
         
@@ -122,7 +121,10 @@ class Security extends React.Component {
 
         if (this.props.tokenCallback && typeof this.props.tokenCallback === 'function') {
             // add the token to the redux store and axios headers
-            this.props.tokenCallback(this.idToken);
+            this.props.tokenCallback({
+                idToken: this.idToken,
+                accessToken: this.accessToken
+            });
         }
 
         if (this.props.profileCallback && typeof this.props.profileCallback === 'function' && this.profile) {
@@ -151,7 +153,6 @@ class Security extends React.Component {
     }
 
     renewSession() {
-        console.log('renew session');
         return new Promise((resolve, reject) => {
             if (localStorage.getItem('isLoggedIn') === 'true') {
                 this.auth0.checkSession({}, (err, authResult) => {

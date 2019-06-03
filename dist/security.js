@@ -158,7 +158,6 @@ var Security = function (_React$Component) {
         value: function setSession(authResult) {
             var _this3 = this;
 
-            console.log('set session');
             // Set isLoggedIn flag in localStorage
             localStorage.setItem('isLoggedIn', 'true');
 
@@ -188,7 +187,10 @@ var Security = function (_React$Component) {
 
             if (this.props.tokenCallback && typeof this.props.tokenCallback === 'function') {
                 // add the token to the redux store and axios headers
-                this.props.tokenCallback(this.idToken);
+                this.props.tokenCallback({
+                    idToken: this.idToken,
+                    accessToken: this.accessToken
+                });
             }
 
             if (this.props.profileCallback && typeof this.props.profileCallback === 'function' && this.profile) {
@@ -219,7 +221,6 @@ var Security = function (_React$Component) {
         value: function renewSession() {
             var _this4 = this;
 
-            console.log('renew session');
             return new Promise(function (resolve, reject) {
                 if (localStorage.getItem('isLoggedIn') === 'true') {
                     _this4.auth0.checkSession({}, function (err, authResult) {
