@@ -111,10 +111,10 @@ class Security extends React.Component {
         this.expiresAt = expiresAt;
 
         const jwtExp = authResult.idTokenPayload && authResult.idTokenPayload.exp;
-        console.log('jwt exp timestamp', jwtExp);
-        console.log('now', now / 1000);
-        const sessionExpBuffer = 60*60; // one hour in ms
-        const sessionRenewTime = Math.floor(jwtExp - (now / 1000) - sessionExpBuffer);
+        console.log('jwt exp timestamp', jwtExp * 1000);
+        console.log('now', now);
+        const sessionExpBuffer = 60*60*1000; // one hour in ms
+        const sessionRenewTime = Math.floor((jwtExp * 1000) - now - sessionExpBuffer);
 
         console.log('timeout', sessionRenewTime);
 
