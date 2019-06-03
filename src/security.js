@@ -16,13 +16,13 @@ class Security extends React.Component {
         this.profile = null;
         this.renewSessionTimer = null;
         
-        const { domain, clientID, redirectUri } = props;
+        const { domain, clientID, redirectUri, audience } = props;
 
         this.auth0 = new auth0.WebAuth({
             domain,
             clientID,
             redirectUri,
-            audience: clientID,
+            audience,
             responseType: 'token id_token',
             scope: 'openid'
         });
