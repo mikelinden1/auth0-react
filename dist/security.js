@@ -50,15 +50,14 @@ var Security = function (_React$Component) {
 
         var domain = props.domain,
             clientID = props.clientID,
-            redirectUri = props.redirectUri,
-            audience = props.audience;
+            redirectUri = props.redirectUri;
 
 
         _this.auth0 = new _auth0Js2.default.WebAuth({
             domain: domain,
             clientID: clientID,
             redirectUri: redirectUri,
-            audience: audience,
+            audience: clientID,
             responseType: 'token id_token',
             scope: 'openid'
         });
