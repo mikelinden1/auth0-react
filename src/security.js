@@ -110,6 +110,8 @@ class Security extends React.Component {
         this.profile = authResult.idTokenPayload && authResult.idTokenPayload['https://my.skift.com/profile'];
         this.expiresAt = expiresAt;
 
+        console.log('auth result', authResult);
+
         const jwtExp = authResult.idTokenPayload && authResult.idTokenPayload.exp;
 
         if (jwtExp) {

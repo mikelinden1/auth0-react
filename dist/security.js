@@ -175,6 +175,8 @@ var Security = function (_React$Component) {
             this.profile = authResult.idTokenPayload && authResult.idTokenPayload['https://my.skift.com/profile'];
             this.expiresAt = expiresAt;
 
+            console.log('auth result', authResult);
+
             var jwtExp = authResult.idTokenPayload && authResult.idTokenPayload.exp;
 
             if (jwtExp) {
