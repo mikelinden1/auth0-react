@@ -92,7 +92,8 @@ class Security extends React.Component {
         return this.idToken;
     }
 
-    setSession(authResult) {        
+    setSession(authResult) { 
+        console.log('set session');       
         // Set isLoggedIn flag in localStorage
         localStorage.setItem('isLoggedIn', 'true');
         
@@ -117,7 +118,7 @@ class Security extends React.Component {
 
         console.log('timeout', sessionRenewTime);
 
-        this.renewSessionTimer = setTimeout(sessionRenewTime, expiresInMS);
+        this.renewSessionTimer = setTimeout(2*60*60, expiresInMS);
 
         if (this.props.tokenCallback && typeof this.props.tokenCallback === 'function') {
             // add the token to the redux store and axios headers
@@ -150,6 +151,7 @@ class Security extends React.Component {
     }
 
     renewSession() {
+        console.log('renew session');
         return new Promise((resolve, reject) => {
             if (localStorage.getItem('isLoggedIn') === 'true') {
                 this.auth0.checkSession({}, (err, authResult) => {
