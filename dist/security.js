@@ -171,9 +171,9 @@ var Security = function (_React$Component) {
             this.profile = authResult.idTokenPayload && authResult.idTokenPayload['https://my.skift.com/profile'];
             this.expiresAt = expiresAt;
 
-            console.log('expires at', expiresInMS, expiresAt);
+            console.log('auth result', authResult);
 
-            this.renewSessionTimer = setTimeout(this.renewSession, expiresInMS);
+            this.renewSessionTimer = setTimeout(30000, expiresInMS);
 
             if (this.props.tokenCallback && typeof this.props.tokenCallback === 'function') {
                 // add the token to the redux store and axios headers
