@@ -156,6 +156,8 @@ var Security = function (_React$Component) {
     }, {
         key: 'setSession',
         value: function setSession(authResult) {
+            var _this3 = this;
+
             console.log('set session');
             // Set isLoggedIn flag in localStorage
             localStorage.setItem('isLoggedIn', 'true');
@@ -165,14 +167,14 @@ var Security = function (_React$Component) {
             (0, _setCookie.setCookie)('signed_in', true, 60 * 60 * 24 * 30);
 
             // Set the time that the access token will expire at
-            var expiresAt = authResult.expiresIn * 1000 + new Date().getTime();
+            var now = new Date().getTime();
+            var expiresAt = authResult.expiresIn * 1000 + now;
             this.accessToken = authResult.accessToken;
             this.idToken = authResult.idToken;
             this.profile = authResult.idTokenPayload && authResult.idTokenPayload['https://my.skift.com/profile'];
             this.expiresAt = expiresAt;
 
             var jwtExp = authResult.idTokenPayload && authResult.idTokenPayload.exp;
-            var now = Date.now();
             console.log('jwt exp timestamp', jwtExp);
             console.log('now', now);
             var sessionExpBuffer = 60 * 60; // one hour in ms
@@ -180,7 +182,9 @@ var Security = function (_React$Component) {
 
             console.log('timeout', sessionRenewTime);
 
-            this.renewSessionTimer = setTimeout(this.renewSession, 2 * 60 * 60);
+            this.renewSessionTimer = setTimeout(function () {
+                return _this3.renewSession();
+            }, 2 * 60 * 60);
 
             if (this.props.tokenCallback && typeof this.props.tokenCallback === 'function') {
                 // add the token to the redux store and axios headers
@@ -213,17 +217,17 @@ var Security = function (_React$Component) {
     }, {
         key: 'renewSession',
         value: function renewSession() {
-            var _this3 = this;
+            var _this4 = this;
 
             console.log('renew session');
             return new Promise(function (resolve, reject) {
                 if (localStorage.getItem('isLoggedIn') === 'true') {
-                    _this3.auth0.checkSession({}, function (err, authResult) {
+                    _this4.auth0.checkSession({}, function (err, authResult) {
                         if (authResult && authResult.accessToken && authResult.idToken) {
-                            _this3.setSession(authResult);
+                            _this4.setSession(authResult);
                             resolve(authResult);
                         } else if (err) {
-                            _this3.logout();
+                            _this4.logout();
                             // alert(`Could not get a new token (${err.error}: ${err.error_description}).`);
                             reject(err);
                         }
@@ -244,11 +248,11 @@ var Security = function (_React$Component) {
     }, {
         key: 'getUserId',
         value: function getUserId() {
-            var _this4 = this;
+            var _this5 = this;
 
             return new Promise(function (resolve, reject) {
                 if (localStorage.getItem('isLoggedIn') === 'true') {
-                    _this4.auth0.client.userInfo(_this4.accessToken, function (err, user) {
+                    _this5.auth0.client.userInfo(_this5.accessToken, function (err, user) {
                         if (err) {
                             reject(err);
                             return;
