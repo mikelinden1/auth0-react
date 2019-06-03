@@ -18,14 +18,19 @@ class Security extends React.Component {
         
         const { domain, clientID, redirectUri, audience } = props;
 
-        this.auth0 = new auth0.WebAuth({
+        const auth0Config = {
             domain,
             clientID,
             redirectUri,
-            audience,
             responseType: 'token id_token',
             scope: 'openid'
-        });
+        };
+
+        if (audience) {
+            auth0Config.audience = audience;
+        }
+
+        this.auth0 = new auth0.WebAuth(auth0Config);
 
         this.state = {
             authChecked: false,
@@ -64,6 +69,8 @@ class Security extends React.Component {
         this.profile = null;
         this.idToken = null;
         this.expiresAt = 0;
+
+        clearTimeout(this.renewSessionTimer);
 
         // // Remove isLoggedIn flag from localStorage
         localStorage.removeItem('isLoggedIn');
@@ -110,17 +117,12 @@ class Security extends React.Component {
         this.profile = authResult.idTokenPayload && authResult.idTokenPayload['https://my.skift.com/profile'];
         this.expiresAt = expiresAt;
 
-        console.log('auth result', authResult);
+        const sessionExpBuffer = 60*60*1000; // one hour in ms
+        const sessionRenewTime = Math.floor((authResult.expiresIn) - now - sessionExpBuffer);
 
-        const jwtExp = authResult.idTokenPayload && authResult.idTokenPayload.exp;
+        clearTimeout(this.renewSessionTimer);
+        this.renewSessionTimer = setTimeout(() => this.renewSession(), sessionRenewTime);
 
-        if (jwtExp) {
-            const sessionExpBuffer = 60*60*1000; // one hour in ms
-            const sessionRenewTime = Math.floor((jwtExp * 1000) - now - sessionExpBuffer);
-
-            clearTimeout(this.renewSessionTimer);
-            this.renewSessionTimer = setTimeout(() => this.renewSession(), sessionRenewTime);
-        }
 
         if (this.props.tokenCallback && typeof this.props.tokenCallback === 'function') {
             // add the token to the redux store and axios headers

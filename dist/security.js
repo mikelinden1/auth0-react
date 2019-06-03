@@ -54,14 +54,19 @@ var Security = function (_React$Component) {
             audience = props.audience;
 
 
-        _this.auth0 = new _auth0Js2.default.WebAuth({
+        var auth0Config = {
             domain: domain,
             clientID: clientID,
             redirectUri: redirectUri,
-            audience: audience,
             responseType: 'token id_token',
             scope: 'openid'
-        });
+        };
+
+        if (audience) {
+            auth0Config.audience = audience;
+        }
+
+        _this.auth0 = new _auth0Js2.default.WebAuth(auth0Config);
 
         _this.state = {
             authChecked: false,
@@ -123,6 +128,8 @@ var Security = function (_React$Component) {
             this.idToken = null;
             this.expiresAt = 0;
 
+            clearTimeout(this.renewSessionTimer);
+
             // // Remove isLoggedIn flag from localStorage
             localStorage.removeItem('isLoggedIn');
             (0, _setCookie.setCookie)('signed_in', false, -10); // negative amount to expire instantly
@@ -175,19 +182,13 @@ var Security = function (_React$Component) {
             this.profile = authResult.idTokenPayload && authResult.idTokenPayload['https://my.skift.com/profile'];
             this.expiresAt = expiresAt;
 
-            console.log('auth result', authResult);
+            var sessionExpBuffer = 60 * 60 * 1000; // one hour in ms
+            var sessionRenewTime = Math.floor(authResult.expiresIn - now - sessionExpBuffer);
 
-            var jwtExp = authResult.idTokenPayload && authResult.idTokenPayload.exp;
-
-            if (jwtExp) {
-                var sessionExpBuffer = 60 * 60 * 1000; // one hour in ms
-                var sessionRenewTime = Math.floor(jwtExp * 1000 - now - sessionExpBuffer);
-
-                clearTimeout(this.renewSessionTimer);
-                this.renewSessionTimer = setTimeout(function () {
-                    return _this3.renewSession();
-                }, sessionRenewTime);
-            }
+            clearTimeout(this.renewSessionTimer);
+            this.renewSessionTimer = setTimeout(function () {
+                return _this3.renewSession();
+            }, sessionRenewTime);
 
             if (this.props.tokenCallback && typeof this.props.tokenCallback === 'function') {
                 // add the token to the redux store and axios headers
