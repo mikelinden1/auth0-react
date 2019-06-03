@@ -111,15 +111,14 @@ class Security extends React.Component {
         this.expiresAt = expiresAt;
 
         const jwtExp = authResult.idTokenPayload && authResult.idTokenPayload.exp;
-        console.log('jwt exp timestamp', jwtExp * 1000);
-        console.log('now', now);
-        const sessionExpBuffer = 60*60*1000; // one hour in ms
-        const sessionRenewTime = Math.floor((jwtExp * 1000) - now - sessionExpBuffer);
 
-        console.log('timeout', sessionRenewTime);
+        if (jwtExp) {
+            const sessionExpBuffer = 60*60*1000; // one hour in ms
+            const sessionRenewTime = Math.floor((jwtExp * 1000) - now - sessionExpBuffer);
 
-        clearTimeout(this.renewSessionTimer);
-        this.renewSessionTimer = setTimeout(() => this.renewSession(), sessionRenewTime);
+            clearTimeout(this.renewSessionTimer);
+            this.renewSessionTimer = setTimeout(() => this.renewSession(), sessionRenewTime);
+        }
 
         if (this.props.tokenCallback && typeof this.props.tokenCallback === 'function') {
             // add the token to the redux store and axios headers
