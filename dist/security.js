@@ -133,6 +133,7 @@ var Security = function (_React$Component) {
 
             // // Remove isLoggedIn flag from localStorage
             localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('state');
             (0, _setCookie.setCookie)('signed_in', false, -10); // negative amount to expire instantly
 
             var returnTo = encodeURIComponent(this.props.appDomain + '/loggedout');
@@ -264,7 +265,8 @@ var Security = function (_React$Component) {
     }, {
         key: 'setAppState',
         value: function setAppState() {
-            this.appState = Math.random().toString(36).slice(-15);
+            var uniqid = require('uniqid');
+            this.appState = uniqid();
             localStorage.setItem('state', this.appState);
 
             return this.appState;

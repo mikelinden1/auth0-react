@@ -74,6 +74,7 @@ class Security extends React.Component {
 
         // // Remove isLoggedIn flag from localStorage
         localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('state');
         setCookie('signed_in', false, -10); // negative amount to expire instantly
 
         const returnTo = encodeURIComponent(this.props.appDomain + '/loggedout');
@@ -191,12 +192,12 @@ class Security extends React.Component {
     }
 
     setAppState() {
-        this.appState = Math.random().toString(36).slice(-15);
+        const uniqid = require('uniqid');
+        this.appState = uniqid();
         localStorage.setItem('state', this.appState);
 
         return this.appState;
     }
-
 
     getUserId() {
         return new Promise((resolve, reject) => {
