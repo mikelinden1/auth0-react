@@ -114,7 +114,6 @@ var Security = function (_React$Component) {
             }
 
             var state = this.setAppState();
-
             this.auth0.authorize({ state: state });
         }
     }, {
@@ -267,6 +266,8 @@ var Security = function (_React$Component) {
         value: function setAppState() {
             this.appState = Math.random().toString(36).slice(-15);
             localStorage.setItem('state', this.appState);
+
+            return this.appState;
         }
     }, {
         key: 'getUserId',

@@ -6,7 +6,6 @@ import AuthContext from './auth-context';
 import { setCookie } from './utils/set-cookie';
 
 class Security extends React.Component {
-
     constructor(props) {
         super(props);
 
@@ -57,7 +56,6 @@ class Security extends React.Component {
         }
 
         const state = this.setAppState();
-
         this.auth0.authorize({ state });
     }
 
@@ -195,6 +193,8 @@ class Security extends React.Component {
     setAppState() {
         this.appState = Math.random().toString(36).slice(-15);
         localStorage.setItem('state', this.appState);
+
+        return this.appState;
     }
 
 
