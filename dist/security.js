@@ -113,8 +113,7 @@ var Security = function (_React$Component) {
                 localStorage.setItem('loginRedirect', redirect);
             }
 
-            var state = Math.random().toString(36).slice(-15);
-            localStorage.setItem('state', state);
+            var state = this.setAppState();
 
             this.auth0.authorize({ state: state });
         }
@@ -238,7 +237,8 @@ var Security = function (_React$Component) {
 
             return new Promise(function (resolve, reject) {
                 if (localStorage.getItem('isLoggedIn') === 'true') {
-                    _this4.auth0.checkSession({}, function (err, authResult) {
+                    var state = _this4.setAppState();
+                    _this4.auth0.checkSession({ state: state }, function (err, authResult) {
                         console.log('renew session', authResult);
                         if (authResult && authResult.accessToken && authResult.idToken) {
                             _this4.setSession(authResult);
@@ -261,6 +261,12 @@ var Security = function (_React$Component) {
             // access token's expiry time
             var expiresAt = this.expiresAt;
             return new Date().getTime() < expiresAt;
+        }
+    }, {
+        key: 'setAppState',
+        value: function setAppState() {
+            this.appState = Math.random().toString(36).slice(-15);
+            localStorage.setItem('state', this.appState);
         }
     }, {
         key: 'getUserId',

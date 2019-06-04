@@ -56,8 +56,7 @@ class Security extends React.Component {
             localStorage.setItem('loginRedirect', redirect);
         }
 
-        const state = Math.random().toString(36).slice(-15);
-        localStorage.setItem('state', state);
+        const state = this.setAppState();
 
         this.auth0.authorize({ state });
     }
@@ -168,7 +167,8 @@ class Security extends React.Component {
     renewSession() {
         return new Promise((resolve, reject) => {
             if (localStorage.getItem('isLoggedIn') === 'true') {
-                this.auth0.checkSession({}, (err, authResult) => {
+                const state = this.setAppState();
+                this.auth0.checkSession({ state }, (err, authResult) => {
                     console.log('renew session', authResult);
                     if (authResult && authResult.accessToken && authResult.idToken) {
                         this.setSession(authResult);
@@ -190,6 +190,11 @@ class Security extends React.Component {
         // access token's expiry time
         let expiresAt = this.expiresAt;
         return new Date().getTime() < expiresAt;
+    }
+
+    setAppState() {
+        this.appState = Math.random().toString(36).slice(-15);
+        localStorage.setItem('state', this.appState);
     }
 
 
