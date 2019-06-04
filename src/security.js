@@ -56,9 +56,10 @@ class Security extends React.Component {
             localStorage.setItem('loginRedirect', redirect);
         }
 
-        this.state = Math.random().toString(36).slice(-15);
+        const state = Math.random().toString(36).slice(-15);
+        localStorage.setItem('state', state);
 
-        this.auth0.authorize({ state: this.state });
+        this.auth0.authorize({ state });
     }
 
     logout(redirect) {
@@ -103,7 +104,9 @@ class Security extends React.Component {
     }
 
     setSession(authResult) { 
-        if (authResult.state !== this.state) {
+        const state = localStorage.getItem('state');
+        console.log('state check', state, authResult.state);
+        if (authResult.state !== state) {
             // mitigate CFCR attacks
             this.logout();
             return;
@@ -124,7 +127,7 @@ class Security extends React.Component {
         this.profile = authResult.idTokenPayload && authResult.idTokenPayload['https://my.skift.com/profile'];
         this.expiresAt = expiresAt;
 
-        const sessionRenewTime = 30*60*60; // 30 minutes        
+        const sessionRenewTime = 30*60*1000; // 30 minutes        
         clearTimeout(this.renewSessionTimer);
         this.renewSessionTimer = setTimeout(() => this.renewSession(), sessionRenewTime);
 

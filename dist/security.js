@@ -113,9 +113,10 @@ var Security = function (_React$Component) {
                 localStorage.setItem('loginRedirect', redirect);
             }
 
-            this.state = Math.random().toString(36).slice(-15);
+            var state = Math.random().toString(36).slice(-15);
+            localStorage.setItem('state', state);
 
-            this.auth0.authorize({ state: this.state });
+            this.auth0.authorize({ state: state });
         }
     }, {
         key: 'logout',
@@ -169,7 +170,9 @@ var Security = function (_React$Component) {
         value: function setSession(authResult) {
             var _this3 = this;
 
-            if (authResult.state !== this.state) {
+            var state = localStorage.getItem('state');
+            console.log('state check', state, authResult.state);
+            if (authResult.state !== state) {
                 // mitigate CFCR attacks
                 this.logout();
                 return;
@@ -190,7 +193,7 @@ var Security = function (_React$Component) {
             this.profile = authResult.idTokenPayload && authResult.idTokenPayload['https://my.skift.com/profile'];
             this.expiresAt = expiresAt;
 
-            var sessionRenewTime = 30 * 60 * 60; // 30 minutes        
+            var sessionRenewTime = 30 * 60 * 1000; // 30 minutes        
             clearTimeout(this.renewSessionTimer);
             this.renewSessionTimer = setTimeout(function () {
                 return _this3.renewSession();
