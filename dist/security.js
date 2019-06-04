@@ -113,7 +113,9 @@ var Security = function (_React$Component) {
                 localStorage.setItem('loginRedirect', redirect);
             }
 
-            this.auth0.authorize();
+            var state = Math.random().toString(36).slice(-5);
+
+            this.auth0.authorize({ state: state });
         }
     }, {
         key: 'logout',
@@ -167,6 +169,8 @@ var Security = function (_React$Component) {
         value: function setSession(authResult) {
             var _this3 = this;
 
+            console.log('authResult', authResult);
+
             // Set isLoggedIn flag in localStorage
             localStorage.setItem('isLoggedIn', 'true');
 
@@ -182,15 +186,11 @@ var Security = function (_React$Component) {
             this.profile = authResult.idTokenPayload && authResult.idTokenPayload['https://my.skift.com/profile'];
             this.expiresAt = expiresAt;
 
-            var sessionExpBuffer = 60 * 60 * 1000; // one hour in ms
-            var sessionRenewTime = Math.floor(authResult.expiresIn - sessionExpBuffer);
-
-            console.log('now, exp, renew', now, authResult.expiresIn, sessionRenewTime);
-
+            var sessionRenewTime = 30 * 60 * 60; // 30 minutes        
             clearTimeout(this.renewSessionTimer);
             this.renewSessionTimer = setTimeout(function () {
                 return _this3.renewSession();
-            }, 300000);
+            }, sessionRenewTime);
 
             if (this.props.tokenCallback && typeof this.props.tokenCallback === 'function') {
                 // add the token to the redux store and axios headers

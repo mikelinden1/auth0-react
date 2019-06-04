@@ -56,7 +56,9 @@ class Security extends React.Component {
             localStorage.setItem('loginRedirect', redirect);
         }
 
-        this.auth0.authorize();
+        const state = Math.random().toString(36).slice(-5);
+
+        this.auth0.authorize({ state });
     }
 
     logout(redirect) {
@@ -101,13 +103,14 @@ class Security extends React.Component {
     }
 
     setSession(authResult) { 
+        console.log('authResult', authResult);
+        
         // Set isLoggedIn flag in localStorage
         localStorage.setItem('isLoggedIn', 'true');
         
         // TODO: set skift_usr cookie so it expires with the JWT
         setCookie('skift_usr', authResult.idToken, 60*60*24*30);
         setCookie('signed_in', true, 60*60*24*30);
-
 
         // Set the time that the access token will expire at
         const now = new Date().getTime();
@@ -117,14 +120,9 @@ class Security extends React.Component {
         this.profile = authResult.idTokenPayload && authResult.idTokenPayload['https://my.skift.com/profile'];
         this.expiresAt = expiresAt;
 
-        const sessionExpBuffer = 60*60*1000; // one hour in ms
-        const sessionRenewTime = Math.floor(authResult.expiresIn - sessionExpBuffer);
-
-        console.log('now, exp, renew', now, authResult.expiresIn, sessionRenewTime);
-
+        const sessionRenewTime = 30*60*60; // 30 minutes        
         clearTimeout(this.renewSessionTimer);
-        this.renewSessionTimer = setTimeout(() => this.renewSession(), 300000);
-
+        this.renewSessionTimer = setTimeout(() => this.renewSession(), sessionRenewTime);
 
         if (this.props.tokenCallback && typeof this.props.tokenCallback === 'function') {
             // add the token to the redux store and axios headers
