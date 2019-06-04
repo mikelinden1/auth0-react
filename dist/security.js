@@ -147,6 +147,7 @@ var Security = function (_React$Component) {
 
             return new Promise(function (resolve, reject) {
                 _this2.auth0.parseHash(function (err, authResult) {
+                    console.log('handle auth', authResult);
                     if (authResult && authResult.accessToken && authResult.idToken) {
                         resolve(_this2.setSession(authResult));
                     } else {
@@ -238,6 +239,7 @@ var Security = function (_React$Component) {
             return new Promise(function (resolve, reject) {
                 if (localStorage.getItem('isLoggedIn') === 'true') {
                     _this4.auth0.checkSession({}, function (err, authResult) {
+                        console.log('renew session', authResult);
                         if (authResult && authResult.accessToken && authResult.idToken) {
                             _this4.setSession(authResult);
                             resolve(authResult);

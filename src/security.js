@@ -86,6 +86,7 @@ class Security extends React.Component {
     handleAuthentication() {
         return new Promise((resolve, reject) => {
             this.auth0.parseHash((err, authResult) => {
+                console.log('handle auth', authResult);
                 if (authResult && authResult.accessToken && authResult.idToken) {
                     resolve(this.setSession(authResult));
                 } else {
@@ -168,6 +169,7 @@ class Security extends React.Component {
         return new Promise((resolve, reject) => {
             if (localStorage.getItem('isLoggedIn') === 'true') {
                 this.auth0.checkSession({}, (err, authResult) => {
+                    console.log('renew session', authResult);
                     if (authResult && authResult.accessToken && authResult.idToken) {
                         this.setSession(authResult);
                         resolve(authResult);
