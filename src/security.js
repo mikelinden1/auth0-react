@@ -105,7 +105,7 @@ class Security extends React.Component {
         const state = localStorage.getItem('state');
 
         if (authResult.state !== state) {
-            // mitigate CFCR attacks
+            // mitigate CSRF attacks
             this.logout();
             return;
         }
