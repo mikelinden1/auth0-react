@@ -146,7 +146,6 @@ var Security = function (_React$Component) {
 
             return new Promise(function (resolve, reject) {
                 _this2.auth0.parseHash(function (err, authResult) {
-                    console.log('handle auth', authResult);
                     if (authResult && authResult.accessToken && authResult.idToken) {
                         resolve(_this2.setSession(authResult));
                     } else {
@@ -171,7 +170,7 @@ var Security = function (_React$Component) {
             var _this3 = this;
 
             var state = localStorage.getItem('state');
-            console.log('state check', state, authResult.state);
+
             if (authResult.state !== state) {
                 // mitigate CFCR attacks
                 this.logout();
@@ -239,7 +238,6 @@ var Security = function (_React$Component) {
                 if (localStorage.getItem('isLoggedIn') === 'true') {
                     var state = _this4.setAppState();
                     _this4.auth0.checkSession({ state: state }, function (err, authResult) {
-                        console.log('renew session', authResult);
                         if (authResult && authResult.accessToken && authResult.idToken) {
                             _this4.setSession(authResult);
                             resolve(authResult);

@@ -84,7 +84,6 @@ class Security extends React.Component {
     handleAuthentication() {
         return new Promise((resolve, reject) => {
             this.auth0.parseHash((err, authResult) => {
-                console.log('handle auth', authResult);
                 if (authResult && authResult.accessToken && authResult.idToken) {
                     resolve(this.setSession(authResult));
                 } else {
@@ -104,7 +103,7 @@ class Security extends React.Component {
 
     setSession(authResult) { 
         const state = localStorage.getItem('state');
-        console.log('state check', state, authResult.state);
+
         if (authResult.state !== state) {
             // mitigate CFCR attacks
             this.logout();
@@ -168,7 +167,6 @@ class Security extends React.Component {
             if (localStorage.getItem('isLoggedIn') === 'true') {
                 const state = this.setAppState();
                 this.auth0.checkSession({ state }, (err, authResult) => {
-                    console.log('renew session', authResult);
                     if (authResult && authResult.accessToken && authResult.idToken) {
                         this.setSession(authResult);
                         resolve(authResult);
