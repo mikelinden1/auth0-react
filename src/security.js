@@ -56,9 +56,9 @@ class Security extends React.Component {
             localStorage.setItem('loginRedirect', redirect);
         }
 
-        const state = Math.random().toString(36).slice(-5);
+        this.state = Math.random().toString(36).slice(-15);
 
-        this.auth0.authorize({ state });
+        this.auth0.authorize({ state: this.state });
     }
 
     logout(redirect) {
@@ -103,8 +103,12 @@ class Security extends React.Component {
     }
 
     setSession(authResult) { 
-        console.log('authResult', authResult);
-        
+        if (authResult.state !== this.state) {
+            // mitigate CFCR attacks
+            this.logout();
+            return;
+        }
+
         // Set isLoggedIn flag in localStorage
         localStorage.setItem('isLoggedIn', 'true');
         
