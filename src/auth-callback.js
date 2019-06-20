@@ -33,8 +33,8 @@ class AuthCallback extends React.Component {
 
         if (authenticated) {
             const redirect = routeRoot ? routeRoot + '/' : '/';
-          
-            return <Redirect to='/test' />;
+
+            return <Redirect to={redirect} />;
         }
 
         if (error) {
