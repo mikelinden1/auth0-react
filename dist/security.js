@@ -172,7 +172,7 @@ var Security = function (_React$Component) {
             var state = localStorage.getItem('state');
 
             if (authResult.state !== state) {
-                // mitigate CFCR attacks
+                // mitigate CSRF attacks
                 this.logout();
                 return;
             }
