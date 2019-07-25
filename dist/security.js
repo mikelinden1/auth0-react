@@ -4,8 +4,6 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -104,8 +102,6 @@ var Security = function (_React$Component) {
             }
         };
 
-        _this.setAppState();
-
         _this.renewSession().then(function () {
             return _this.setState({ authChecked: true });
         }).catch(function (err) {
@@ -121,7 +117,7 @@ var Security = function (_React$Component) {
                 localStorage.setItem('loginRedirect', redirect);
             }
 
-            var state = this.appState;
+            var state = this.setAppState();
             this.auth0.authorize({ state: state });
         }
     }, {
@@ -158,11 +154,10 @@ var Security = function (_React$Component) {
                 }
 
                 _this2.auth0.parseHash(function (err, authResult) {
-                    console.log('parshing hash', authResult);
                     if (authResult && authResult.accessToken && authResult.idToken) {
                         resolve(_this2.setSession(authResult));
                     } else {
-                        console.log('error?', err);
+                        console.log('error in handle auth', err);
                         reject(err);
                     }
                 });
@@ -183,14 +178,9 @@ var Security = function (_React$Component) {
         value: function setSession(authResult) {
             var _this3 = this;
 
-            var state = this.appState;
-
-            console.log('state in setSession', state);
-            console.log('authResult state', authResult.state);
-            console.log('full authResult', authResult);
+            var state = localStorage.getItem('state');
 
             if (authResult.state !== state) {
-                console.log('state doesn\'t match');
                 // mitigate CSRF attacks
                 this.logout();
                 return;
@@ -218,7 +208,6 @@ var Security = function (_React$Component) {
             }, sessionRenewTime);
 
             if (this.props.tokenCallback && typeof this.props.tokenCallback === 'function') {
-                console.log('set token to', this.idToken);
                 // add the token to the redux store and axios headers
                 this.props.tokenCallback({
                     idToken: this.idToken,
@@ -227,7 +216,6 @@ var Security = function (_React$Component) {
             }
 
             if (this.props.profileCallback && typeof this.props.profileCallback === 'function' && this.profile) {
-                console.log('set profile to', this.profile);
                 this.props.profileCallback(this.profile);
             }
 
@@ -256,27 +244,20 @@ var Security = function (_React$Component) {
             var _this4 = this;
 
             return new Promise(function (resolve, reject) {
-                var loggedIn = localStorage.getItem('isLoggedIn');
-                console.log('logged in?', loggedIn, typeof loggedIn === 'undefined' ? 'undefined' : _typeof(loggedIn));
-
-                if (loggedIn === 'true') {
-                    var state = _this4.appState;
-                    console.log('state in renew', state);
-
+                if (localStorage.getItem('isLoggedIn') === 'true') {
+                    var state = _this4.setAppState();
                     _this4.auth0.checkSession({ state: state }, function (err, authResult) {
                         if (authResult && authResult.accessToken && authResult.idToken) {
-                            console.log('call setSession');
                             _this4.setSession(authResult);
                             resolve(authResult);
                         } else if (err) {
-                            console.log('renew session error?', err);
+                            console.log('error in renew session', err);
                             _this4.logout();
                             // alert(`Could not get a new token (${err.error}: ${err.error_description}).`);
                             reject(err);
                         }
                     });
                 } else {
-                    console.log('not logged in');
                     resolve(null);
                 }
             });
@@ -292,18 +273,8 @@ var Security = function (_React$Component) {
     }, {
         key: 'setAppState',
         value: function setAppState() {
-            var previousState = localStorage.getItem('state');
-
-            if (previousState) {
-                console.log('use previous state');
-                this.appState = previousState;
-            } else {
-                console.log('new state');
-                this.appState = (0, _uniqid2.default)();
-                localStorage.setItem('state', this.appState);
-            }
-
-            console.log('state in set state', this.appState);
+            this.appState = (0, _uniqid2.default)();
+            localStorage.setItem('state', this.appState);
 
             return this.appState;
         }

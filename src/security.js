@@ -46,8 +46,6 @@ class Security extends React.Component {
             renewSession: () => this.renewSession()
         };
 
-        this.setAppState();
-
         this.renewSession()
             .then(() => this.setState({ authChecked: true }))
             .catch((err) => this.setState({ err }));
@@ -58,7 +56,7 @@ class Security extends React.Component {
             localStorage.setItem('loginRedirect', redirect);
         }
 
-        const state = this.appState;
+        const state = this.setAppState();
         this.auth0.authorize({ state });
     }
 
@@ -91,11 +89,10 @@ class Security extends React.Component {
             }
 
             this.auth0.parseHash((err, authResult) => {
-                console.log('parshing hash', authResult);
                 if (authResult && authResult.accessToken && authResult.idToken) {
                     resolve(this.setSession(authResult));
                 } else {
-                    console.log('error?', err);
+                    console.log('error in handle auth', err);
                     reject(err);
                 }
             });
@@ -111,14 +108,9 @@ class Security extends React.Component {
     }
 
     setSession(authResult) { 
-        const state = this.appState;
-
-        console.log('state in setSession', state);
-        console.log('authResult state', authResult.state);
-        console.log('full authResult', authResult);
+        const state = localStorage.getItem('state');
 
         if (authResult.state !== state) {
-            console.log('state doesn\'t match');
             // mitigate CSRF attacks
             this.logout();
             return;
@@ -144,7 +136,6 @@ class Security extends React.Component {
         this.renewSessionTimer = setTimeout(() => this.renewSession(), sessionRenewTime);
 
         if (this.props.tokenCallback && typeof this.props.tokenCallback === 'function') {
-            console.log('set token to', this.idToken);
             // add the token to the redux store and axios headers
             this.props.tokenCallback({
                 idToken: this.idToken,
@@ -153,7 +144,6 @@ class Security extends React.Component {
         }
 
         if (this.props.profileCallback && typeof this.props.profileCallback === 'function' && this.profile) {
-            console.log('set profile to', this.profile);
             this.props.profileCallback(this.profile);
         }
 
@@ -180,27 +170,20 @@ class Security extends React.Component {
 
     renewSession() {
         return new Promise((resolve, reject) => {
-            const loggedIn = localStorage.getItem('isLoggedIn');
-            console.log('logged in?', loggedIn, typeof loggedIn);
-
-            if (loggedIn === 'true') {
-                const state = this.appState;
-                console.log('state in renew', state);
-
+            if (localStorage.getItem('isLoggedIn') === 'true') {
+                const state = this.setAppState();
                 this.auth0.checkSession({ state }, (err, authResult) => {
                     if (authResult && authResult.accessToken && authResult.idToken) {
-                        console.log('call setSession');
                         this.setSession(authResult);
                         resolve(authResult);
                     } else if (err) {
-                        console.log('renew session error?', err);
+                        console.log('error in renew session', err);
                         this.logout();
                         // alert(`Could not get a new token (${err.error}: ${err.error_description}).`);
                         reject(err);
                     }
                 });
             } else {
-                console.log('not logged in');
                 resolve(null);
             }
         });
@@ -214,18 +197,8 @@ class Security extends React.Component {
     }
 
     setAppState() {
-        const previousState = localStorage.getItem('state');
-
-        if (previousState) {
-            console.log('use previous state');
-            this.appState = previousState;
-        } else {
-            console.log('new state');
-            this.appState = uniqid();
-            localStorage.setItem('state', this.appState);
-        }
-
-        console.log('state in set state', this.appState);
+        this.appState = uniqid();
+        localStorage.setItem('state', this.appState);
 
         return this.appState;
     }
