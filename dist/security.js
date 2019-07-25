@@ -102,6 +102,8 @@ var Security = function (_React$Component) {
             }
         };
 
+        _this.setAppState();
+
         _this.renewSession().then(function () {
             return _this.setState({ authChecked: true });
         }).catch(function (err) {
@@ -117,7 +119,7 @@ var Security = function (_React$Component) {
                 localStorage.setItem('loginRedirect', redirect);
             }
 
-            var state = this.setAppState();
+            var state = this.appState;
             this.auth0.authorize({ state: state });
         }
     }, {
@@ -173,7 +175,7 @@ var Security = function (_React$Component) {
         value: function setSession(authResult) {
             var _this3 = this;
 
-            var state = localStorage.getItem('state');
+            var state = this.appState;
 
             if (authResult.state !== state) {
                 // mitigate CSRF attacks
@@ -240,7 +242,7 @@ var Security = function (_React$Component) {
 
             return new Promise(function (resolve, reject) {
                 if (localStorage.getItem('isLoggedIn') === 'true') {
-                    var state = _this4.setAppState();
+                    var state = _this4.appState;
                     console.log('state in renew', state);
 
                     _this4.auth0.checkSession({ state: state }, function (err, authResult) {

@@ -46,6 +46,8 @@ class Security extends React.Component {
             renewSession: () => this.renewSession()
         };
 
+        this.setAppState();
+
         this.renewSession()
             .then(() => this.setState({ authChecked: true }))
             .catch((err) => this.setState({ err }));
@@ -56,7 +58,7 @@ class Security extends React.Component {
             localStorage.setItem('loginRedirect', redirect);
         }
 
-        const state = this.setAppState();
+        const state = this.appState;
         this.auth0.authorize({ state });
     }
 
@@ -103,7 +105,7 @@ class Security extends React.Component {
     }
 
     setSession(authResult) { 
-        const state = localStorage.getItem('state');
+        const state = this.appState;
 
         if (authResult.state !== state) {
             // mitigate CSRF attacks
@@ -166,7 +168,7 @@ class Security extends React.Component {
     renewSession() {
         return new Promise((resolve, reject) => {
             if (localStorage.getItem('isLoggedIn') === 'true') {
-                const state = this.setAppState();
+                const state = this.appState;
                 console.log('state in renew', state);
 
                 this.auth0.checkSession({ state }, (err, authResult) => {
