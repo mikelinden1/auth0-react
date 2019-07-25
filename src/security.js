@@ -107,6 +107,10 @@ class Security extends React.Component {
     setSession(authResult) { 
         const state = this.appState;
 
+        console.log('state in setSession', state);
+        console.log('authResult state', authResult.state);
+        console.log('full authResult', authResult);
+
         if (authResult.state !== state) {
             // mitigate CSRF attacks
             this.logout();
