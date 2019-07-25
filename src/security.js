@@ -84,6 +84,10 @@ class Security extends React.Component {
 
     handleAuthentication() {
         return new Promise((resolve, reject) => {
+            if (this.state.loggedIn) {
+                return resolve({});
+            }
+
             this.auth0.parseHash((err, authResult) => {
                 if (authResult && authResult.accessToken && authResult.idToken) {
                     resolve(this.setSession(authResult));

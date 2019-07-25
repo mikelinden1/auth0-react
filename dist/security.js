@@ -149,6 +149,10 @@ var Security = function (_React$Component) {
             var _this2 = this;
 
             return new Promise(function (resolve, reject) {
+                if (_this2.state.loggedIn) {
+                    return resolve({});
+                }
+
                 _this2.auth0.parseHash(function (err, authResult) {
                     if (authResult && authResult.accessToken && authResult.idToken) {
                         resolve(_this2.setSession(authResult));
