@@ -92,7 +92,6 @@ class Security extends React.Component {
                 if (authResult && authResult.accessToken && authResult.idToken) {
                     resolve(this.setSession(authResult));
                 } else {
-                    console.log('error in handle auth', err);
                     reject(err);
                 }
             });
@@ -177,7 +176,6 @@ class Security extends React.Component {
                         this.setSession(authResult);
                         resolve(authResult);
                     } else if (err) {
-                        console.log('error in renew session', err);
                         this.logout();
                         // alert(`Could not get a new token (${err.error}: ${err.error_description}).`);
                         reject(err);
