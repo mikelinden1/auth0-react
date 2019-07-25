@@ -195,9 +195,19 @@ class Security extends React.Component {
     }
 
     setAppState() {
-        this.appState = uniqid();
-        localStorage.setItem('state', this.appState);
-        console.log('state in setAppState', this.appState);
+        const previousState = localStorage.getItem('state');
+
+        if (previousState) {
+            console.log('use previous state');
+            this.appState = previousState;
+        } else {
+            console.log('new state');
+            this.appState = uniqid();
+            localStorage.setItem('state', this.appState);
+        }
+
+        console.log('state in set state', this.appState);
+
         return this.appState;
     }
 

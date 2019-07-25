@@ -271,9 +271,19 @@ var Security = function (_React$Component) {
     }, {
         key: 'setAppState',
         value: function setAppState() {
-            this.appState = (0, _uniqid2.default)();
-            localStorage.setItem('state', this.appState);
-            console.log('state in setAppState', this.appState);
+            var previousState = localStorage.getItem('state');
+
+            if (previousState) {
+                console.log('use previous state');
+                this.appState = previousState;
+            } else {
+                console.log('new state');
+                this.appState = (0, _uniqid2.default)();
+                localStorage.setItem('state', this.appState);
+            }
+
+            console.log('state in set state', this.appState);
+
             return this.appState;
         }
     }, {
