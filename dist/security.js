@@ -157,6 +157,7 @@ var Security = function (_React$Component) {
                     if (authResult && authResult.accessToken && authResult.idToken) {
                         resolve(_this2.setSession(authResult));
                     } else {
+                        console.log('error in handle auth', err);
                         reject(err);
                     }
                 });
@@ -250,6 +251,7 @@ var Security = function (_React$Component) {
                             _this4.setSession(authResult);
                             resolve(authResult);
                         } else if (err) {
+                            console.log('error in renew session', err);
                             _this4.logout();
                             // alert(`Could not get a new token (${err.error}: ${err.error_description}).`);
                             reject(err);
