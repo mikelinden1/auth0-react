@@ -24,6 +24,10 @@ var _authContext2 = _interopRequireDefault(_authContext);
 
 var _setCookie = require('./utils/set-cookie');
 
+var _uniqid = require('uniqid');
+
+var _uniqid2 = _interopRequireDefault(_uniqid);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
@@ -263,8 +267,7 @@ var Security = function (_React$Component) {
     }, {
         key: 'setAppState',
         value: function setAppState() {
-            var uniqid = require('uniqid');
-            this.appState = uniqid();
+            this.appState = (0, _uniqid2.default)();
             localStorage.setItem('state', this.appState);
 
             return this.appState;

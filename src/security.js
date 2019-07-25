@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import auth0 from 'auth0-js';
 import AuthContext from './auth-context';
 import { setCookie } from './utils/set-cookie';
+import uniqid from 'uniqid';
 
 class Security extends React.Component {
     constructor(props) {
@@ -190,7 +191,6 @@ class Security extends React.Component {
     }
 
     setAppState() {
-        const uniqid = require('uniqid');
         this.appState = uniqid();
         localStorage.setItem('state', this.appState);
 
