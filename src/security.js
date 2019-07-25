@@ -114,6 +114,7 @@ class Security extends React.Component {
         console.log('full authResult', authResult);
 
         if (authResult.state !== state) {
+            console.log('state doesn\'t match');
             // mitigate CSRF attacks
             this.logout();
             return;
@@ -139,6 +140,7 @@ class Security extends React.Component {
         this.renewSessionTimer = setTimeout(() => this.renewSession(), sessionRenewTime);
 
         if (this.props.tokenCallback && typeof this.props.tokenCallback === 'function') {
+            console.log('set token to', this.idToken);
             // add the token to the redux store and axios headers
             this.props.tokenCallback({
                 idToken: this.idToken,
@@ -147,6 +149,7 @@ class Security extends React.Component {
         }
 
         if (this.props.profileCallback && typeof this.props.profileCallback === 'function' && this.profile) {
+            console.log('set profile to', this.profile);
             this.props.profileCallback(this.profile);
         }
 
@@ -175,16 +178,18 @@ class Security extends React.Component {
         return new Promise((resolve, reject) => {
             const loggedIn = localStorage.getItem('isLoggedIn');
             console.log('logged in?', loggedIn, typeof loggedIn);
-            
+
             if (loggedIn === 'true') {
                 const state = this.appState;
                 console.log('state in renew', state);
 
                 this.auth0.checkSession({ state }, (err, authResult) => {
                     if (authResult && authResult.accessToken && authResult.idToken) {
+                        console.log('call setSession');
                         this.setSession(authResult);
                         resolve(authResult);
                     } else if (err) {
+                        console.log('renew session error?', err);
                         this.logout();
                         // alert(`Could not get a new token (${err.error}: ${err.error_description}).`);
                         reject(err);

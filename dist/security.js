@@ -186,6 +186,7 @@ var Security = function (_React$Component) {
             console.log('full authResult', authResult);
 
             if (authResult.state !== state) {
+                console.log('state doesn\'t match');
                 // mitigate CSRF attacks
                 this.logout();
                 return;
@@ -213,6 +214,7 @@ var Security = function (_React$Component) {
             }, sessionRenewTime);
 
             if (this.props.tokenCallback && typeof this.props.tokenCallback === 'function') {
+                console.log('set token to', this.idToken);
                 // add the token to the redux store and axios headers
                 this.props.tokenCallback({
                     idToken: this.idToken,
@@ -221,6 +223,7 @@ var Security = function (_React$Component) {
             }
 
             if (this.props.profileCallback && typeof this.props.profileCallback === 'function' && this.profile) {
+                console.log('set profile to', this.profile);
                 this.props.profileCallback(this.profile);
             }
 
@@ -258,9 +261,11 @@ var Security = function (_React$Component) {
 
                     _this4.auth0.checkSession({ state: state }, function (err, authResult) {
                         if (authResult && authResult.accessToken && authResult.idToken) {
+                            console.log('call setSession');
                             _this4.setSession(authResult);
                             resolve(authResult);
                         } else if (err) {
+                            console.log('renew session error?', err);
                             _this4.logout();
                             // alert(`Could not get a new token (${err.error}: ${err.error_description}).`);
                             reject(err);
