@@ -28,7 +28,7 @@ class AuthCallback extends React.Component {
 
     render() {
         const { authenticated, error } = this.state;
-        const { errorMsg, loader, routeRoot } = this.props;
+        const { errorMsg, loader, routeRoot, auth } = this.props;
 
 
         if (authenticated) {
@@ -39,7 +39,7 @@ class AuthCallback extends React.Component {
 
         if (error) {
             const ErrorMessage = errorMsg ? errorMsg : (props) => <div>{props.content}</div>;
-            return <ErrorMessage header="An error occured" content={error} />;
+            return <ErrorMessage header="An error occured" content={error} auth={auth} />;
         }
 
         const Loader = loader ? loader : () => <div>Logging in...</div>;

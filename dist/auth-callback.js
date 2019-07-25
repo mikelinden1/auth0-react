@@ -71,7 +71,8 @@ var AuthCallback = function (_React$Component) {
             var _props2 = this.props,
                 errorMsg = _props2.errorMsg,
                 loader = _props2.loader,
-                routeRoot = _props2.routeRoot;
+                routeRoot = _props2.routeRoot,
+                auth = _props2.auth;
 
 
             if (authenticated) {
@@ -88,7 +89,7 @@ var AuthCallback = function (_React$Component) {
                         props.content
                     );
                 };
-                return _react2.default.createElement(ErrorMessage, { header: 'An error occured', content: error });
+                return _react2.default.createElement(ErrorMessage, { header: 'An error occured', content: error, auth: auth });
             }
 
             var Loader = loader ? loader : function () {
