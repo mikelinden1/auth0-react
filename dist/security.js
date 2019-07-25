@@ -241,6 +241,8 @@ var Security = function (_React$Component) {
             return new Promise(function (resolve, reject) {
                 if (localStorage.getItem('isLoggedIn') === 'true') {
                     var state = _this4.setAppState();
+                    console.log('state in renew', state);
+
                     _this4.auth0.checkSession({ state: state }, function (err, authResult) {
                         if (authResult && authResult.accessToken && authResult.idToken) {
                             _this4.setSession(authResult);
@@ -269,7 +271,7 @@ var Security = function (_React$Component) {
         value: function setAppState() {
             this.appState = (0, _uniqid2.default)();
             localStorage.setItem('state', this.appState);
-
+            console.log('state in setAppState', this.appState);
             return this.appState;
         }
     }, {

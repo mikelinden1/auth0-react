@@ -167,6 +167,8 @@ class Security extends React.Component {
         return new Promise((resolve, reject) => {
             if (localStorage.getItem('isLoggedIn') === 'true') {
                 const state = this.setAppState();
+                console.log('state in renew', state);
+
                 this.auth0.checkSession({ state }, (err, authResult) => {
                     if (authResult && authResult.accessToken && authResult.idToken) {
                         this.setSession(authResult);
@@ -193,7 +195,7 @@ class Security extends React.Component {
     setAppState() {
         this.appState = uniqid();
         localStorage.setItem('state', this.appState);
-
+        console.log('state in setAppState', this.appState);
         return this.appState;
     }
 
