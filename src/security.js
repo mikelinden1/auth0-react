@@ -87,9 +87,11 @@ class Security extends React.Component {
     handleAuthentication() {
         return new Promise((resolve, reject) => {
             this.auth0.parseHash((err, authResult) => {
+                console.log('parshing hash', authResult);
                 if (authResult && authResult.accessToken && authResult.idToken) {
                     resolve(this.setSession(authResult));
                 } else {
+                    console.log('error?', err);
                     reject(err);
                 }
             });
@@ -171,7 +173,10 @@ class Security extends React.Component {
 
     renewSession() {
         return new Promise((resolve, reject) => {
-            if (localStorage.getItem('isLoggedIn') === 'true') {
+            const loggedIn = localStorage.getItem('isLoggedIn');
+            console.log('logged in?', loggedIn, typeof loggedIn);
+            
+            if (loggedIn === 'true') {
                 const state = this.appState;
                 console.log('state in renew', state);
 
@@ -186,6 +191,7 @@ class Security extends React.Component {
                     }
                 });
             } else {
+                console.log('not logged in');
                 resolve(null);
             }
         });
