@@ -90,8 +90,10 @@ class Security extends React.Component {
 
             this.auth0.parseHash((err, authResult) => {
                 if (authResult && authResult.accessToken && authResult.idToken) {
+                    console.log('handle auth resolve', authResult);
                     resolve(this.setSession(authResult));
                 } else {
+                    console.log('handle auth reject', err);
                     reject(err);
                 }
             });
@@ -107,9 +109,11 @@ class Security extends React.Component {
     }
 
     setSession(authResult) { 
+        console.log('auth result', authResult);
         const state = localStorage.getItem('state');
 
         if (authResult.state !== state) {
+            console.log('bad state');
             // mitigate CSRF attacks
             this.logout();
             return;

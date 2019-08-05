@@ -155,8 +155,10 @@ var Security = function (_React$Component) {
 
                 _this2.auth0.parseHash(function (err, authResult) {
                     if (authResult && authResult.accessToken && authResult.idToken) {
+                        console.log('handle auth resolve', authResult);
                         resolve(_this2.setSession(authResult));
                     } else {
+                        console.log('handle auth reject', err);
                         reject(err);
                     }
                 });
@@ -177,9 +179,11 @@ var Security = function (_React$Component) {
         value: function setSession(authResult) {
             var _this3 = this;
 
+            console.log('auth result', authResult);
             var state = localStorage.getItem('state');
 
             if (authResult.state !== state) {
+                console.log('bad state');
                 // mitigate CSRF attacks
                 this.logout();
                 return;
