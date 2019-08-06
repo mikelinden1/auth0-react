@@ -95,6 +95,10 @@ class Security extends React.Component {
                 } else {
                     console.log('handle auth reject', err);
                     reject(err);
+
+                    if (err.error === 'invalid_token') {
+                        this.login();
+                    }
                 }
             });
         });

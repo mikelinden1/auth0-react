@@ -160,6 +160,10 @@ var Security = function (_React$Component) {
                     } else {
                         console.log('handle auth reject', err);
                         reject(err);
+
+                        if (err.error === 'invalid_token') {
+                            _this2.login();
+                        }
                     }
                 });
             });
