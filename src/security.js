@@ -3,7 +3,6 @@ import { withRouter } from 'react-router-dom';
 
 import auth0 from 'auth0-js';
 import AuthContext from './auth-context';
-import { setCookie } from './utils/set-cookie';
 import uniqid from 'uniqid';
 
 class Security extends React.Component {
@@ -76,7 +75,6 @@ class Security extends React.Component {
         // // Remove isLoggedIn flag from localStorage
         localStorage.removeItem('isLoggedIn');
         localStorage.removeItem('state');
-        setCookie('signed_in', false, -10); // negative amount to expire instantly
 
         const returnTo = encodeURIComponent(this.props.appDomain + '/loggedout');
         window.location.href = `https://${this.props.domain}/v2/logout?returnTo=${returnTo}`;
@@ -122,10 +120,6 @@ class Security extends React.Component {
         // Set isLoggedIn flag in localStorage
         localStorage.setItem('isLoggedIn', 'true');
         
-        // TODO: set skift_usr cookie so it expires with the JWT
-        setCookie('skift_usr', authResult.idToken, 60*60*24*30);
-        setCookie('signed_in', true, 60*60*24*30);
-
         // Set the time that the access token will expire at
         const now = new Date().getTime();
         const expiresAt = (authResult.expiresIn * 1000) + now;

@@ -22,8 +22,6 @@ var _authContext = require('./auth-context');
 
 var _authContext2 = _interopRequireDefault(_authContext);
 
-var _setCookie = require('./utils/set-cookie');
-
 var _uniqid = require('uniqid');
 
 var _uniqid2 = _interopRequireDefault(_uniqid);
@@ -138,7 +136,6 @@ var Security = function (_React$Component) {
             // // Remove isLoggedIn flag from localStorage
             localStorage.removeItem('isLoggedIn');
             localStorage.removeItem('state');
-            (0, _setCookie.setCookie)('signed_in', false, -10); // negative amount to expire instantly
 
             var returnTo = encodeURIComponent(this.props.appDomain + '/loggedout');
             window.location.href = 'https://' + this.props.domain + '/v2/logout?returnTo=' + returnTo;
@@ -191,10 +188,6 @@ var Security = function (_React$Component) {
 
             // Set isLoggedIn flag in localStorage
             localStorage.setItem('isLoggedIn', 'true');
-
-            // TODO: set skift_usr cookie so it expires with the JWT
-            (0, _setCookie.setCookie)('skift_usr', authResult.idToken, 60 * 60 * 24 * 30);
-            (0, _setCookie.setCookie)('signed_in', true, 60 * 60 * 24 * 30);
 
             // Set the time that the access token will expire at
             var now = new Date().getTime();
